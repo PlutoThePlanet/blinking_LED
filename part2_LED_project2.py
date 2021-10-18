@@ -1,21 +1,13 @@
-from time import sleep
-from gpiozero import LED
-from gpiozero import Button
+import RPi.GPIO as GPIO
+import time
 
-led = LED(18)
-button = Button(25)
+GPIO.setwarnings(False)
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(18, GPIO.OUT)
+GPIO.setup(25, GPIO.IN)
 
-pressed = False
-
-
-if button.wait_for_press():
-    pressed = True
-
-while pressed:
-    led.on()
-    sleep(1)
-    led.off()
-    sleep(1)
-    
-    if (button.is_pressed):
-        pressed = False
+while True:
+    if GPIO.input(25)
+        GPIO.output(18, False)
+    else:
+        GPIO.output(18, True)
