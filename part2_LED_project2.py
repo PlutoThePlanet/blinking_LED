@@ -1,26 +1,27 @@
 import RPi.GPIO as GPIO
 import time
+from gpiozero import LED
+from gpiozero import Button
 
+led = LED(18)
+button = Button(25)
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BCM)
-GPIO.setup(18, GPIO.OUT)
-GPIO.setup(25, GPIO.IN)
+GPIO.setup(led, GPIO.OUT)
+GPIO.setup(button, GPIO.IN)
 
-# if button is not pressed light is off, else light is on
-# while True:
-#     if GPIO.input(25):
-#         GPIO.output(18, False)
-#     else:
-#         GPIO.output(18, True)
-
-pressed = 1
+pressed = 0
 
 while True:
-    if GPIO.input(25):
-        GPIO.output(18, False)
+    button.wait_for_press()
+    pressed += 1
+    
+    while (pressed % 2 == 0):
+        GPIO.output(led, True)
+        time.sleep(1)
+        GPIO.output(button, False)
+        time.sleep(1)
+        if button.wait_for_press():
+            break
     else:
-        while (GPIO.input(25)):
-            GPIO.output(18, True)
-            time.sleep(1)
-            GPIO.output(18, False)
-            time.sleep(1)
+        GPIO.output(led, False)
